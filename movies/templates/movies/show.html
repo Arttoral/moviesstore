@@ -9,18 +9,34 @@
         <hr />
         <p><b>Description:</b> {{ template_data.movie.description }}</p>
         <p><b>Price:</b> ${{ template_data.movie.price }}</p>
+
+        <!-- Updated Add to Cart Form -->
         <p class="card-text">
-          <form method="post" action="{% url 'cart.add' id=template_data.movie.id %}">
+          <form method="post" action="{% url 'cart.add' id=template_data.movie.id cartNum=0 %}">
+            {% csrf_token %}
             <div class="row">
-              {% csrf_token %}
               <div class="col-auto">
                 <div class="input-group col-auto">
                   <div class="input-group-text">Quantity</div>
-                  <input type="number" min="1" max="10" class="form-control quantity-input" name="quantity" value="1">
+                  <input type="number" min="1" max="10"
+                         class="form-control quantity-input"
+                         name="quantity" value="1">
                 </div>
               </div>
+
+              <!-- Cart Selection Dropdown -->
               <div class="col-auto">
-                <button class="btn bg-dark text-white" type="submit">Add to cart</button>
+                <select class="form-select" name="cart_choice">
+                  <option value="1">Cart 1</option>
+                  <option value="2">Cart 2</option>
+                  <option value="3">Cart 3</option>
+                </select>
+              </div>
+
+              <div class="col-auto">
+                <button class="btn bg-dark text-white" type="submit">
+                  Add to cart
+                </button>
               </div>
             </div>
           </form>
@@ -30,25 +46,22 @@
         <hr />
         <ul class="list-group">
           {% for review in template_data.reviews %}
-          <li class="list-group-item pb-3 pt-3">
-            <h5 class="card-title">
-              Review by {{ review.user.username }}
-            </h5>
-            <h6 class="card-subtitle mb-2 text-muted">
-              {{ review.date }}
-            </h6>
-            <p class="card-text">{{ review.comment }}</p>
-            {% if user.is_authenticated and user == review.user %}
-            <a class="btn btn-primary"
-              href="{% url 'movies.edit_review' id=template_data.movie.id review_id=review.id %}">
-              Edit
-            </a>
-            <a class="btn btn-danger"
-              href="{% url 'movies.delete_review' id=template_data.movie.id review_id=review.id %}">
-              Delete
-            </a>
-            {% endif %}
-          </li>
+            <li class="list-group-item pb-3 pt-3">
+              <h5 class="card-title">Review by {{ review.user.username }}</h5>
+              <h6 class="card-subtitle mb-2 text-muted">{{ review.date }}</h6>
+              <p class="card-text">{{ review.comment }}</p>
+
+              {% if user.is_authenticated and user == review.user %}
+                <a class="btn btn-primary"
+                   href="{% url 'movies.edit_review' id=template_data.movie.id review_id=review.id %}">
+                  Edit
+                </a>
+                <a class="btn btn-danger"
+                   href="{% url 'movies.delete_review' id=template_data.movie.id review_id=review.id %}">
+                  Delete
+                </a>
+              {% endif %}
+            </li>
           {% endfor %}
         </ul>
 
@@ -79,6 +92,7 @@
         </div>
         {% endif %}
       </div>
+
       <div class="col-md-6 mx-auto mb-3 text-center">
         <img src="{{ template_data.movie.image.url }}" class="rounded img-card-400" />
       </div>
