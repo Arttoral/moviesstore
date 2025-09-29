@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header">
+                    <h3><i class="fas fa-plus-circle"></i> Create Movie Petition</h3>
+                </div>
+                <div class="card-body">
+                    <form method="post">
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            <label for="movie_title" class="form-label">Movie Title *</label>
+                            <input type="text" class="form-control" id="movie_title" name="movie_title" required>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="movie_description" class="form-label">Movie Description *</label>
+                            <textarea class="form-control" id="movie_description" name="movie_description" rows="3" 
+                                      placeholder="Brief description of the movie..." required></textarea>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="reason" class="form-label">Why should this movie be added? *</label>
+                            <textarea class="form-control" id="reason" name="reason" rows="4" 
+                                      placeholder="Explain why this movie would be a great addition to our catalog..." required></textarea>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="petitioner_name" class="form-label">Your Name *</label>
+                                    <input type="text" class="form-control" id="petitioner_name" name="petitioner_name" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="petitioner_email" class="form-label">Your Email *</label>
+                                    <input type="email" class="form-control" id="petitioner_email" name="petitioner_email" required>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="d-flex justify-content-between">
+                            <a href="{% url 'petition:list' %}" class="btn btn-secondary">
+                                <i class="fas fa-arrow-left"></i> Back to Petitions
+                            </a>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-paper-plane"></i> Submit Petition
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
